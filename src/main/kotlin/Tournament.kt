@@ -7,5 +7,5 @@ data class TournamentState(
 class Tournament {
     var state = TournamentState(0, mutableListOf(), mutableListOf())
 
-    fun progress(disqualified())
+    //fun progress(disqualified())
 }

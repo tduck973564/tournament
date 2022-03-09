@@ -15,17 +15,25 @@ data class Person(val name: String, var qualified: Boolean = true) {
 
 data class Match(val person1: Person, val person2: Person) {
     companion object {
-        fun arrayOfMatchesFromPersonArray(people: List<Person>): List<Match> {
+
+        data class MatchesWithRemainder(val matches: List<Match>, val remainder: Person?)
+
+        fun arrayOfMatchesFromPersonArray(people: List<Person>): MatchesWithRemainder {
             val people = people.shuffled()
             val output: MutableList<Match> = mutableListOf()
+            val loopLength =
+                if (people.count() % 2 == 0) people.count() else people.count() - 1
 
-            var i = 0; while (i < people.count()) {
+            var i = 0; while (i < loopLength) {
 
                 output.add(Match(people[i], people[i+1]))
                 i += 2
             }
 
-            return output.toList()
+            return if (loopLength < people.count())
+                MatchesWithRemainder(output.toList(), people[people.lastIndex])
+            else
+                MatchesWithRemainder(output.toList(), null)
         }
     }
 }

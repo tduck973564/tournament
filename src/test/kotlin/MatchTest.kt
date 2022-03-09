@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 internal class MatchTest {
@@ -12,11 +11,15 @@ internal class MatchTest {
 
     @Test
     fun `Random matches are made from people (even)`() {
-    // TODO
+        for (i in Match.arrayOfMatchesFromPersonArray(evenPeople).matches)
+            if (!(i.person1 in evenPeople && i.person2 in evenPeople))
+                throw Exception()
     }
 
     @Test
     fun `Random matches are made from people (odd)`() {
-    // TODO
+        for (i in Match.arrayOfMatchesFromPersonArray(oddPeople).matches)
+            if (!(i.person1 in oddPeople && i.person2 in oddPeople))
+                throw Exception()
     }
 }
