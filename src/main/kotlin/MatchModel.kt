@@ -10,7 +10,6 @@ data class MatchModel(val person1: PersonModel, val person2: PersonModel) {
                 if (people.count() % 2 == 0) people.count() else people.count() - 1
 
             var i = 0; while (i < loopLength) {
-
                 output.add(MatchModel(people[i], people[i+1]))
                 i += 2
             }
