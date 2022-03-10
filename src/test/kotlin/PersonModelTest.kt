@@ -1,9 +1,10 @@
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.io.StringReader
+import PeopleModel.Companion.Person
 
 internal class PersonModelTest {
-    val csv = """
+    private val csv = """
     Thomas
     Chungus
     That guy
@@ -11,15 +12,15 @@ internal class PersonModelTest {
     """.trimIndent()
 
     @Test
-    fun `Person list from CSV must be in order with correct names and with people`() {
+    fun `Person list from CSV must be equal to the model`() {
         Assertions.assertEquals(
-            PersonModel.arrayFromCsv(
+            PeopleModel.fromCsv(
                 StringReader(csv)),
-            listOf(
-                PersonModel("Thomas"),
-                PersonModel("Chungus"),
-                PersonModel("That guy"),
-                PersonModel("Fesd")
+            PeopleModel(mutableListOf(
+                Person("Thomas"),
+                Person("Chungus"),
+                Person("That guy"),
+                Person("Fesd"))
             )
         )
     }

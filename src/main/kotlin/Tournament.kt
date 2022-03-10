@@ -1,11 +1,11 @@
 data class TournamentModel(
     var round: Int,
-    var people: MutableList<PersonModel>,
-    var matches: MutableList<MatchModel>
+    var people: PeopleModel,
+    var matches: MatchesModel
     )
 
 class TournamentController {
-    var state = TournamentModel(0, mutableListOf(), mutableListOf())
+    var state = TournamentModel(0, PeopleModel(mutableListOf()), MatchesModel(mutableListOf()))
 
     //fun progress(disqualified())
 }
