@@ -13,10 +13,10 @@ repositories {
 }
 
 dependencies {
-    implementation("org.apache.commons:commons-csv:1.8")
+    implementation("org.apache.commons:commons-csv:1.9.0")
     implementation("org.junit.jupiter:junit-jupiter:5.8.2")
     implementation("io.insert-koin:koin-core:3.1.5")
-    //testImplementation("io.insert-koin:koin-test:3.1.5")
+    testImplementation("io.insert-koin:koin-test:3.1.5")
     testImplementation(kotlin("test"))
 }
 
