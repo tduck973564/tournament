@@ -2,7 +2,9 @@ import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import java.io.Reader
 
-data class Person(val name: String, var qualified: Boolean = true)
+data class Person(val name: String, var qualified: Boolean = true) {
+    override fun toString() = name
+}
 
 interface IPeopleService {
     var list: MutableList<Person>
