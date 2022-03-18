@@ -1,5 +1,5 @@
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import org.junit.Test
+import org.junit.Assert.*
 import java.io.StringReader
 
 internal class PeopleServiceTest {
@@ -12,7 +12,7 @@ internal class PeopleServiceTest {
 
     @Test
     fun `Person list from CSV must be equal to the service's model`() {
-        Assertions.assertEquals(
+        assertEquals(
             PeopleServiceImpl.fromCsv(
                 StringReader(csv)).list,
             mutableListOf(
@@ -26,7 +26,7 @@ internal class PeopleServiceTest {
 
     @Test
     fun `Service must disqualify person`() {
-        Assertions.assertEquals(
+        assertEquals(
             PeopleServiceImpl(mutableListOf(
                 Person("Thomas"),
                 Person("Chungus"),
@@ -43,7 +43,7 @@ internal class PeopleServiceTest {
 
     @Test
     fun `Service must qualify person`() {
-        Assertions.assertEquals(
+       assertEquals(
             PeopleServiceImpl(mutableListOf(
                 Person("Thomas"),
                 Person("Chungus"),

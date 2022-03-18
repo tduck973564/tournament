@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 internal class TournamentModelTest {
     val evenPeople = PeopleServiceImpl(mutableListOf(
