@@ -1,5 +1,4 @@
 import tornadofx.*
-import javax.script.Bindings
 
 class TournamentView : View() {
 
