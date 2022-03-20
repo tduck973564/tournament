@@ -11,6 +11,7 @@ class TournamentView : View() {
             tableview(listOf(match.person1, match.person2).asObservable()) {
                 readonlyColumn("Name", Person::name)
                 column("Qualified", Person::qualified)
+                // TODO: fix this its too tall
             }
         }
         button("Refresh").action {
