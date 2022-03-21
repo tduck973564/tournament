@@ -3,7 +3,7 @@ import org.koin.dsl.module
 import tornadofx.launch
 
 val mainModule = module {
-    single { PeopleServiceImpl() }
+    single { PeopleServiceImpl() as IPeopleService }
 }
 
 fun main(args: Array<String>) {

@@ -16,19 +16,19 @@ class TournamentView : View("Tournament App") {
     private fun renderMatchesInto(node: Node) {
         var count = 1
 
-        node.add(label("Round ${round.value}").addClass(Styles.h2))
+        node.add(label("Round ${round.value}").addClass(Styles.title2))
 
         if (controller.matches.isEmpty()) {
-            node.add(label("No more matches!").addClass(Styles.h3).apply {
+            node.add(label("No more matches!").addClass(Styles.title3).apply {
                 style { fontWeight = FontWeight.NORMAL }
             })
-            runCatching { node.add(label("${controller.peopleService.getWinner()} is the winner!").addClass(Styles.h3).apply {
+            runCatching { node.add(label("${controller.peopleService.getWinner()} is the winner!").addClass(Styles.title3).apply {
                 style { fontWeight = FontWeight.NORMAL }
             }) }
         } else {
             for (match in controller.matches) {
 
-                node.add(label("Match $count").addClass(Styles.h3))
+                node.add(label("Match $count").addClass(Styles.title3))
 
                 listOf(match.person1, match.person2).asObservable().forEach {
                     node.add(hbox {
@@ -72,21 +72,14 @@ class TournamentView : View("Tournament App") {
             vbox {
                 spacing = spacingVal
 
-                addClass(Styles.root)
+                addClass(Styles.base)
 
                 hbox {
                     spacing = spacingVal
-                    alignment = Pos.CENTER_LEFT
+                    alignment = Pos.BASELINE_CENTER
 
-                    label("Matches").addClass(Styles.h1)
-                    button("Refresh")
-                        .action {
-                            if (currControllerPeopleList != controller.peopleService.list) {
-                                controller.refresh()
-                                currControllerPeopleList = controller.peopleService.list.map { it.copy() }
-                                round += 1
-                            }
-                        }
+                    label("Matches").addClass(Styles.title1)
+
                 }
                 scrollpane {
                     spacing = spacingVal
@@ -101,9 +94,25 @@ class TournamentView : View("Tournament App") {
                 }
             }
         }
-    }
+        bottom {
+            hbox {
+                addClass(Styles.base)
+                alignment = Pos.CENTER_LEFT
+                spacing = spacingVal
 
-init {
-        root.style = "-fx-font-family: 'sans-serif';"
+                button("Refresh")
+                    .action {
+                        if (currControllerPeopleList != controller.peopleService.list) {
+                            controller.refresh()
+                            currControllerPeopleList = controller.peopleService.list.map { it.copy() }
+                            round += 1
+                        }
+                    }
+                }
+            }
+        }
+
+    init {
+        root.style = "-fx-font-family: 'SF Pro', 'Helvetica Neue', 'Segoe UI Variable', 'Segoe UI', sans-serif;"
     }
 }
