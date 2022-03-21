@@ -18,7 +18,7 @@ interface IPeopleService {
     fun getWinner(): Person
 }
 
-class PeopleServiceImpl(override var list: MutableList<Person>): IPeopleService {
+class PeopleServiceImpl(override var list: MutableList<Person> = mutableListOf()): IPeopleService {
 
     override fun add(personToAdd: Person) { list.add(personToAdd) }
 
@@ -55,11 +55,9 @@ class PeopleServiceImpl(override var list: MutableList<Person>): IPeopleService 
         else return getQualified()[0]
     }
 
-    companion object {
-        fun fromCsv(reader: Reader): PeopleServiceImpl {
-            val csvParser = CSVParser(reader, CSVFormat.DEFAULT)
+    fun fromCsv(reader: Reader) {
+        val csvParser = CSVParser(reader, CSVFormat.DEFAULT)
 
-            return PeopleServiceImpl(csvParser.map { Person(it.get(0)) }.toMutableList())
-        }
+        list = csvParser.map { Person(it.get(0)) }.toMutableList()
     }
 }

@@ -13,8 +13,8 @@ internal class PeopleServiceTest {
     @Test
     fun `Person list from CSV must be equal to the service's model`() {
         assertEquals(
-            PeopleServiceImpl.fromCsv(
-                StringReader(csv)).list,
+            PeopleServiceImpl().apply { fromCsv(
+                StringReader(csv)) }.list,
             mutableListOf(
                 Person("Thomas"),
                 Person("Chungus"),

@@ -1,13 +1,13 @@
 import org.junit.Test
 
 internal class TournamentModelTest {
-    val evenPeople = PeopleServiceImpl(mutableListOf(
+    private val evenPeople = PeopleServiceImpl(mutableListOf(
         Person("Thomas"),
         Person("Chungus"),
         Person("Fesd"),
         Person("Monkey")
     ))
-    val oddPeople = evenPeople.apply { add(Person("Odd")) }
+    private val oddPeople = evenPeople.apply { add(Person("Odd")) }
 
     @Test
     fun `Random matches are made from people (even)`() {

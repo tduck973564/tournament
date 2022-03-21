@@ -8,6 +8,7 @@ class TournamentApp: App(TournamentView::class, Styles::class) {
         with(stage) {
             minWidth = 600.0
             minHeight = 400.0
+
             super.start(this)
         }
     }
