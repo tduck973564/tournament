@@ -15,30 +15,33 @@ interface IPeopleService {
     fun qualify(personToQualify: Person)
     fun getQualified(): List<Person>
     fun getDisqualified(): List<Person>
+    fun getWinner(): Person
 }
 
 class PeopleServiceImpl(override var list: MutableList<Person>): IPeopleService {
 
-    override fun add(personToAdd: Person) {
-        list.add(personToAdd)
-    }
+    override fun add(personToAdd: Person) { list.add(personToAdd) }
 
-    override fun remove(personToRemove: Person) {
-        list.remove(personToRemove)
-    }
+    override fun remove(personToRemove: Person) { list.remove(personToRemove) }
 
     override fun disqualify(personToDisqualify: Person) {
-        list.map {
-            if (it.name == personToDisqualify.name) it.qualified = false
+        list = list.map {
+            if (it.name == personToDisqualify.name) {
+                it.qualified = false
+                it
+            }
             else it
-        }
+        } as MutableList<Person>
     }
 
     override fun qualify(personToQualify: Person) {
-        list.map {
-            if (it.name == personToQualify.name) it.qualified = true
+        list = list.map {
+            if (it.name == personToQualify.name) {
+                it.qualified = true
+                it
+            }
             else it
-        }
+        } as MutableList<Person>
     }
 
     override fun getQualified() =
@@ -46,6 +49,11 @@ class PeopleServiceImpl(override var list: MutableList<Person>): IPeopleService 
 
     override fun getDisqualified() =
         list.filter { !it.qualified }
+
+    override fun getWinner(): Person {
+        if (getQualified().count() != 1) throw Exception("No one has won yet!")
+        else return getQualified()[0]
+    }
 
     companion object {
         fun fromCsv(reader: Reader): PeopleServiceImpl {
