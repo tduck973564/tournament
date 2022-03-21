@@ -4,7 +4,7 @@ import tornadofx.launch
 
 val mainModule = module {
     single { PeopleServiceImpl(
-        mutableListOf(Person("Joe biden"), Person("MOHAMMAD RAjAB WALI"))
+        mutableListOf(Person("Joe biden"), Person("MOHAMMAD RAjAB WALI"), Person("donald"), Person("sfgsds"))
     ) as IPeopleService }
 }
 
