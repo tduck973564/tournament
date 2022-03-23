@@ -1,7 +1,9 @@
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.geometry.Pos
 import javafx.scene.Node
+import javafx.scene.layout.VBox
 import javafx.scene.text.FontWeight
+import javafx.stage.FileChooser
 import tornadofx.*
 
 class TournamentView : View("Tournament App") {
@@ -10,8 +12,6 @@ class TournamentView : View("Tournament App") {
     private var currControllerPeopleList = controller.peopleService.list.map { it.copy() }
 
     private var round = SimpleIntegerProperty(1)
-
-    private val spacingVal = 10.0
 
     private fun renderMatchesInto(node: Node) {
         var count = 1
@@ -44,12 +44,32 @@ class TournamentView : View("Tournament App") {
         }
     }
 
+    private fun reloadMatchesInto(node: Node) {
+        clear(node)
+        controller.refresh()
+        renderMatchesInto(node)
+    }
+
+    private fun clear(node: Node) = node.getChildList()?.clear()
+
+    private lateinit var matchesPane: VBox
+
     override val root = borderpane {
+
+
         top {
             menubar {
                 menu("File") {
                     item("Load people from .csv").action {
-                        // TODO: File selector window
+                        val fileList = chooseFile(
+                            "Choose a .csv file...",
+                            arrayOf(FileChooser.ExtensionFilter("CSV File", "*.csv"))
+                        )
+
+                        val service = controller.peopleService as PeopleServiceImpl
+                        service.fromCsv(fileList[0].reader())
+
+                        reloadMatchesInto(matchesPane)
                     }
                     item("Save state").action {
                         // TODO: File selector window, deserialize model to JSON
@@ -85,7 +105,7 @@ class TournamentView : View("Tournament App") {
                     spacing = spacingVal
                     paddingAll = 5.0
 
-                    vbox {
+                    matchesPane = vbox {
                         spacing = spacingVal
 
                         renderMatchesInto(this)
