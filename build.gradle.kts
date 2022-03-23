@@ -1,9 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.6.10"
     application
     id("org.openjfx.javafxplugin") version "0.0.12"
+    kotlin("plugin.serialization") version "1.6.10"
 }
 
 group = "me.thoma"
@@ -25,6 +26,7 @@ dependencies {
     implementation("junit:junit:4.13.2")
     implementation("no.tornado:tornadofx:1.7.20")
     testImplementation(kotlin("test"))
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 }
 
 tasks.test {

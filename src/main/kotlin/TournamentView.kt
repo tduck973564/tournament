@@ -6,12 +6,20 @@ import javafx.scene.text.FontWeight
 import javafx.stage.FileChooser
 import tornadofx.*
 
+enum class ErrorMessages(val message: String) {
+    FILENOTCHOSEN("You did not choose a file."),
+    COULDNOTSAVE("The file could not be saved");
+
+    override fun toString() = message
+}
+
 class TournamentView : View("Tournament App") {
     private val controller: TournamentController by inject()
     // This crap on the end is here because it's shallow copied without it, utter insanity
     private var currControllerPeopleList = controller.peopleService.list.map { it.copy() }
-
     private var round = SimpleIntegerProperty(1)
+
+    private lateinit var matchesPane: VBox
 
     private fun renderMatchesInto(node: Node) {
         var count = 1
@@ -48,42 +56,100 @@ class TournamentView : View("Tournament App") {
         clear(node)
         controller.refresh()
         renderMatchesInto(node)
+        round = SimpleIntegerProperty(1)
     }
 
     private fun clear(node: Node) = node.getChildList()?.clear()
 
-    private lateinit var matchesPane: VBox
+    private fun saveStateAs() {
+        val fileList = chooseFile(
+            "Save...",
+            arrayOf(FileChooser.ExtensionFilter("JSON File", "*.json")),
+            mode = FileChooserMode.Save
+        )
+
+        val model = controller.serializeToJson()
+
+        try {
+            controller.saveLocation = fileList[0].toPath()
+            fileList[0].writeText(model)
+        } catch (e: IndexOutOfBoundsException) {
+            openInternalWindow(ErrorFragment(ErrorMessages.FILENOTCHOSEN.toString()))
+        } catch (e: Exception) {
+            openInternalWindow(ErrorFragment("${ErrorMessages.COULDNOTSAVE}: $e"))
+        }
+    }
+
+    private fun loadPeopleFromCsv() {
+        val fileList = chooseFile(
+            "Choose a .csv file...",
+            arrayOf(FileChooser.ExtensionFilter("CSV File", "*.csv"))
+        )
+
+        val service = controller.peopleService as PeopleServiceImpl
+
+        try {
+            service.fromCsv(fileList[0].reader())
+        } catch (e: IndexOutOfBoundsException) {
+            openInternalWindow(ErrorFragment(ErrorMessages.FILENOTCHOSEN.toString()))
+        }
+
+        reloadMatchesInto(matchesPane)
+    }
+
+    private fun saveState() {
+        if (controller.saveLocation == null)
+            saveStateAs()
+        else {
+            val model = controller.serializeToJson()
+
+            try {
+                controller.saveLocation!!.toFile().writeText(model)
+            } catch (e: Exception) {
+                openInternalWindow(ErrorFragment("${ErrorMessages.COULDNOTSAVE}: $e"))
+            }
+        }
+    }
+
+    private fun loadState() {
+        val fileList = chooseFile(
+            "Choose a .json file...",
+            arrayOf(FileChooser.ExtensionFilter("JSON File", "*.json"))
+        )
+
+        try {
+            controller.deserializeStringToModel(fileList[0].readText())
+        } catch (e: IndexOutOfBoundsException) {
+            openInternalWindow(ErrorFragment(ErrorMessages.FILENOTCHOSEN.toString()))
+        }
+
+        clear(matchesPane)
+        round = SimpleIntegerProperty(1)
+        renderMatchesInto(matchesPane)
+    }
 
     override val root = borderpane {
-
-
         top {
             menubar {
-                menu("File") {
-                    item("Load people from .csv").action {
-                        val fileList = chooseFile(
-                            "Choose a .csv file...",
-                            arrayOf(FileChooser.ExtensionFilter("CSV File", "*.csv"))
-                        )
+                menu("Save") {
 
-                        val service = controller.peopleService as PeopleServiceImpl
-                        service.fromCsv(fileList[0].reader())
 
-                        reloadMatchesInto(matchesPane)
+                    item("Save state as", "Shortcut+Shift+S").action {
+                        saveStateAs()
                     }
-                    item("Save state").action {
-                        // TODO: File selector window, deserialize model to JSON
+
+                    item("Save state", "Shortcut+S").action {
+                        saveState()
                     }
-                    item("Load state from .json").action {
-                        // TODO: File selector window, serialize JSON to TournamentModel and assign
-                    }
+
+
                 }
-                menu("Edit") {
-                    item("Undo").action {
-                        // TODO: History feature, keybindings
+                menu("Load") {
+                    item("Load state from .json").action {
+                        loadState()
                     }
-                    item("Redo").action {
-                        // TODO: History feature, keybindings
+                    item("Load people from .csv").action {
+                        loadPeopleFromCsv()
                     }
                 }
             }
@@ -126,13 +192,12 @@ class TournamentView : View("Tournament App") {
                             controller.refresh()
                             currControllerPeopleList = controller.peopleService.list.map { it.copy() }
                             round += 1
+                            renderMatchesInto(matchesPane)
                         }
                     }
                 }
             }
         }
 
-    init {
-        root.style = "-fx-font-family: 'SF Pro', 'Helvetica Neue', 'Segoe UI Variable', 'Segoe UI', sans-serif;"
-    }
+    init { root.style = rootStyle }
 }

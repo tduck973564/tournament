@@ -8,6 +8,8 @@ class Styles: Stylesheet() {
         val title2 by cssclass()
         val title3 by cssclass()
 
+        val caption by cssclass()
+
         val base by cssclass()
     }
 
@@ -31,6 +33,13 @@ class Styles: Stylesheet() {
         }
         title3 {
             fontSize = 15.px
+
+            startMargin = 35.px
+            endMargin = 35.px
+        }
+
+        caption {
+            fontSize = 10.px
 
             startMargin = 35.px
             endMargin = 35.px

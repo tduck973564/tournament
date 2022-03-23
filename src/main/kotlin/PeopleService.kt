@@ -1,7 +1,9 @@
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
 import java.io.Reader
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Person(val name: String, var qualified: Boolean = true) {
     override fun toString() = name
 }
