@@ -14,4 +14,4 @@ jpackage --type pkg \
  --name TournamentApp \
  --input ./build/libs \
  --main-jar untitled-"$TOURNAMENT_VERSION"-standalone.jar\
- --main-class org.example.AppKt
+ --main-class org.example.MainKt
