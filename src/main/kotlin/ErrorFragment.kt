@@ -1,6 +1,6 @@
 import tornadofx.*
 
-class ErrorFragment(val message: String = "There was an unspecified error."): Fragment() {
+class ErrorFragment(private val message: String = "There was an unspecified error."): Fragment() {
 
     override val root = vbox {
         spacing = spacingVal

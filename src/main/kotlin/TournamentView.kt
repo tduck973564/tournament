@@ -6,7 +6,7 @@ import javafx.scene.text.FontWeight
 import javafx.stage.FileChooser
 import tornadofx.*
 
-enum class ErrorMessages(val message: String) {
+enum class ErrorMessages(private val message: String) {
     FILENOTCHOSEN("You did not choose a file."),
     COULDNOTSAVE("The file could not be saved");
 
