@@ -14,10 +14,10 @@ jobs:
     steps: 
       - uses: actions/checkout@v2
       
-      - name: Makes `gradlew` executable
+      - name: Make `gradlew` executable
         run: chmod +x ./gradlew
                 
-      - name: Tests application
+      - name: Test application
         run: ./gradlew test
         
   build:
@@ -25,8 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Makes `gradlew` executable
+      - name: Make `gradlew` executable
         run: chmod +x ./gradlew
 
-      - name: Builds application
+      - name: Build application
         run: ./gradlew build
