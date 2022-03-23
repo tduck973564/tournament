@@ -15,7 +15,7 @@ class TournamentApp: App(TournamentView::class, Styles::class) {
 
     init {
         FX.dicontainer = object : DIContainer {
-            override inline fun <T : Any> getInstance(type: KClass<T>)
+            override fun <T : Any> getInstance(type: KClass<T>)
                 = get().get<T>(type)
         }
     }
